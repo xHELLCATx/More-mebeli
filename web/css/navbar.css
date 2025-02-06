@@ -1,0 +1,72 @@
+.navbar-nav .nav-link {
+    background-color: #f8f9fa;
+    border-radius: 20px;
+    padding: 8px 20px;
+    margin: 0 5px;
+    color: #333 !important;
+    transition: all 0.3s ease;
+}
+
+/* Специальные стили для ссылки корзины */
+.navbar-nav .nav-link[href*="cart"] {
+    padding: 8px 15px;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.navbar-nav .nav-link[href*="cart"]:hover {
+    background-color: #f8f9fa;
+}
+
+.navbar-nav .nav-link[href*="cart"] .fa-shopping-cart {
+    color: #212529;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.navbar-nav .nav-item.dropdown .dropdown-menu {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-nav .nav-item.dropdown .dropdown-item {
+    padding: 8px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-nav .nav-item.dropdown .dropdown-item:hover {
+    background-color: #ffe3e3;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    padding: 8px 20px;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    color: #333 !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.social-icon {
+    transition: transform 0.2s ease;
+    background-color: white;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+}
+
+.footer-link:hover {
+    color: #ff6b6b !important;
+}

@@ -1,0 +1,96 @@
+.profile-dashboard {
+    padding: 20px;
+}
+
+.stats-container {
+    margin-bottom: 2rem;
+}
+
+.stats-card {
+    padding: 1.5rem;
+    border-radius: 10px;
+    color: white;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stats-info {
+    position: relative;
+    z-index: 1;
+}
+
+.stats-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.stats-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.stats-icon {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+.management-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.management-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-info {
+    padding: 1rem 0;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.info-item label {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.info-item .value {
+    font-size: 1rem;
+    color: #333;
+}
+
+.action-buttons .btn {
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+}
+
+.action-buttons .btn i {
+    margin-right: 0.5rem;
+    width: 20px;
+}

@@ -1,0 +1,241 @@
+main > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer {
+    font-size: .9em;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.footer h5 {
+    margin-bottom: 20px;
+}
+
+.footer p {
+    margin-bottom: 10px;
+}
+
+.footer i {
+    margin-right: 10px;
+}
+
+.footer .social-links {
+    margin-top: 10px;
+}
+
+/* Стили для иконок в футере */
+.footer .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.footer .social-icon i {
+    margin: 0;
+    font-size: 20px;
+    color: #0088cc;
+}
+
+.footer .social-icon .fa-vk {
+    color: #4a76a8;
+}
+
+.footer a {
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.footer a:hover img {
+    opacity: 0.8;
+}
+
+.footer .social-links a {
+    transition: opacity 0.3s ease;
+}
+
+.footer .social-links a:hover {
+    opacity: 0.8;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+/* Navbar styles */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 500;
+}
+
+.nav-link {
+    position: relative;
+    display: inline-block;
+    color: #333 !important;
+    font-weight: 500;
+    padding: 8px 15px !important;
+    margin: 0 5px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b !important;
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+    color: #ff6b6b !important;
+    background-color: rgba(255, 107, 107, 0.1);
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    content: '';
+    left: 3px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    margin: 4px 4px 2px 4px;
+    background: transparent;
+}
+
+a.asc:after {
+    border-bottom: solid 7px #212529;
+    border-top-width: 0;
+}
+
+a.desc:after {
+    border-top: solid 7px #212529;
+    border-bottom-width: 0;
+}
+
+.grid-view th,
+.grid-view td:last-child {
+    white-space: nowrap;
+}
+
+.grid-view .filters input,
+.grid-view .filters select {
+    min-width: 50px;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* align the logout "link" (button in form) of the navbar */
+.nav li > form > button.logout {
+    padding-top: 7px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+@media(max-width:767px) {
+    .nav li > form > button.logout {
+        display:block;
+        text-align: left;
+        width: 100%;
+        padding: 10px 0;
+    }
+}
+
+.nav > li > form > button.logout:focus,
+.nav > li > form > button.logout:hover {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.nav > li > form > button.logout:focus {
+    outline: none;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Стили для корзины в навбаре */
+.nav-item .fa-shopping-cart {
+    font-size: 1.2rem;
+    color: rgb(0, 0, 0);
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover .fa-shopping-cart {
+    color: rgba(255, 255, 255, .75);
+}
+
+.cart-counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    padding: 0.15rem 0.35rem;
+    font-size: 0.75rem;
+    min-width: 1rem;
+    text-align: center;
+    transform: translate(50%, -50%);
+}
+
+/* Стили для счетчика корзины */
+#cart-counter {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    border-radius: 50%;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    min-width: 20px;
+    height: 20px;
+    line-height: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Общие стили для иконок */
+.fas, .far, .fab {
+    margin-right: 10px;
+}
+
+/* Стили для кнопок в личном кабинете */
+.btn i {
+    margin-right: 8px;
+}
+
+/* Стили для статуса */
+.status-active {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 4px;
+    display: inline-block;
+}
