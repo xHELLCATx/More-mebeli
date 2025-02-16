@@ -17,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($order, 'status')->dropDownList([
             'new' => 'Новый',
             'processing' => 'В обработке',
-            'completed' => 'Завершен',
             'cancelled' => 'Отменен'
         ]) ?>
 

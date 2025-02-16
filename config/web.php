@@ -51,6 +51,9 @@ $config = [
                 ],
             ],
         ],
+        'orderBot' => [
+            'class' => 'app\components\OrderNotificationBot',
+        ],
         'db' => $db,
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -58,8 +61,11 @@ $config = [
             'rules' => [
                 'admin' => 'admin/index',
                 'admin/<action>' => 'admin/<action>',
+                'admin/generate-seo' => 'admin/generate-seo',
                 'catalog/<id:\d+>' => 'site/catalog',
                 'register' => 'site/register',
+                'product/<seo_url>' => 'site/product',
+                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
             ],
         ],
         'formatter' => [

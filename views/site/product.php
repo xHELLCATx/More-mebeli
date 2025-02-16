@@ -8,8 +8,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Home', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => ['catalog']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$images = $product->getAllImages();
 $isFavorite = $product->isFavorite(Yii::$app->user->id);
+$images = $product->getAllImages();
 ?>
 
 <div class="product-page">
@@ -18,46 +18,42 @@ $isFavorite = $product->isFavorite(Yii::$app->user->id);
     <div class="row">
         <div class="col-md-6">
             <!-- Слайд-шоу изображений -->
-            <?php if (!empty($images)): ?>
-                <div id="productCarousel" class="carousel slide mb-4" data-bs-interval="false">
-                    <!-- Слайды -->
-                    <div class="carousel-inner">
-                        <?php foreach ($images as $index => $image): ?>
-                            <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                                <img src="<?= Yii::getAlias('@web/uploads/') . $image ?>" 
-                                     class="d-block w-100 rounded product-image" 
-                                     alt="<?= Html::encode($product->name) ?>">
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <!-- Кнопки навигации -->
-                    <?php if (count($images) > 1): ?>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Предыдущий</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Следующий</span>
-                        </button>
-                    <?php endif; ?>
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <?php foreach ($images as $index => $image): ?>
+                        <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                            <img src="<?= Yii::getAlias('@web/uploads/') . $image ?>" 
+                                 class="d-block w-100 rounded product-image" 
+                                 alt="<?= Html::encode($product->name) ?>"
+                                 title="<?= Html::encode($product->name) ?>">
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-
-                <!-- Миниатюры -->
                 <?php if (count($images) > 1): ?>
-                    <div class="row thumbnails">
-                        <?php foreach ($images as $index => $image): ?>
-                            <div class="col-3 mb-3">
-                                <img src="<?= Yii::getAlias('@web/uploads/') . $image ?>" 
-                                     class="img-thumbnail <?= $index === 0 ? 'active' : '' ?>"
-                                     data-bs-target="#productCarousel" 
-                                     data-bs-slide-to="<?= $index ?>"
-                                     alt="Thumbnail <?= $index + 1 ?>">
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Предыдущий</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Следующий</span>
+                    </button>
                 <?php endif; ?>
+            </div>
+
+            <?php if (count($images) > 1): ?>
+                <div class="row thumbnails mt-3">
+                    <?php foreach ($images as $index => $image): ?>
+                        <div class="col-3 mb-3">
+                            <img src="<?= Yii::getAlias('@web/uploads/') . $image ?>" 
+                                 class="img-thumbnail <?= $index === 0 ? 'active' : '' ?>"
+                                 data-bs-target="#productCarousel" 
+                                 data-bs-slide-to="<?= $index ?>"
+                                 alt="<?= Html::encode($product->name) ?>"
+                                 title="<?= Html::encode($product->name) ?>">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             <?php endif; ?>
         </div>
 

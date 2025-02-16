@@ -106,8 +106,10 @@ foreach ($cartItems as $item) {
                                     <td>
                                         <?php if ($item['image']): ?>
                                             <img src="<?= Yii::getAlias('@web/uploads/') . $item['image'] ?>" 
+                                                 class="img-thumbnail" 
+                                                 style="max-width: 100px;"
                                                  alt="<?= Html::encode($item['name']) ?>"
-                                                 style="max-width: 50px;">
+                                                 title="<?= Html::encode($item['name']) ?>">
                                         <?php endif; ?>
                                     </td>
                                     <td><?= Html::encode($item['name']) ?></td>
