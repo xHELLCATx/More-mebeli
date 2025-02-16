@@ -80,7 +80,6 @@ class OrderController extends Controller
         $order->total_sum = $total;
         
         if ($order->load(Yii::$app->request->post()) && $order->save()) {
-            $orderItems = [];
             foreach ($cart as $item) {
                 $orderItem = new \app\models\OrderItem([
                     'order_id' => $order->id,
@@ -89,29 +88,7 @@ class OrderController extends Controller
                     'price' => $item['price'],
                 ]);
                 $orderItem->save();
-                $orderItems[] = [
-                    'name' => $item['name'],
-                    'quantity' => $item['quantity'],
-                    'price' => $item['price']
-                ];
             }
-            
-            // Отправляем уведомление о новом заказе
-            $user = Yii::$app->user->identity;
-            $orderData = [
-                'order_id' => $order->id,
-                'customer_name' => $user->username,
-                'customer_phone' => $order->phone,
-                'customer_email' => $user->email,
-                'delivery_address' => $order->delivery_address,
-                'comment' => $order->comment,
-                'created_at' => $order->created_at,
-                'status' => $order->status,
-                'items' => $orderItems,
-                'total_amount' => $order->total_sum
-            ];
-            
-            Yii::$app->orderBot->sendOrderNotification($orderData);
             
             Yii::$app->session->remove('cart');
             
@@ -239,11 +216,6 @@ class OrderController extends Controller
      */
     public function actionUpdate($id)
     {
-        // Отключаем кэширование для этой страницы
-        Yii::$app->response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
-        Yii::$app->response->headers->set('Pragma', 'no-cache');
-        Yii::$app->response->headers->set('Expires', '0');
-
         $order = Order::findOne($id);
         
         if ($order === null) {
@@ -260,34 +232,6 @@ class OrderController extends Controller
             $order->comment = $currentComment;
             
             if ($order->save()) {
-                // Получаем все товары заказа
-                $orderItems = [];
-                foreach ($order->orderItems as $item) {
-                    $orderItems[] = [
-                        'name' => $item->product->name,
-                        'quantity' => $item->quantity,
-                        'price' => $item->price
-                    ];
-                }
-
-                // Отправляем уведомление об обновлении заказа
-                $user = User::findOne($order->user_id);
-                $orderData = [
-                    'order_id' => $order->id,
-                    'customer_name' => $user->username,
-                    'customer_phone' => $order->phone,
-                    'customer_email' => $user->email,
-                    'delivery_address' => $order->delivery_address,
-                    'comment' => $order->comment,
-                    'created_at' => $order->created_at,
-                    'status' => $order->status,
-                    'items' => $orderItems,
-                    'total_amount' => $order->total_sum,
-                    'is_update' => true
-                ];
-                
-                Yii::$app->orderBot->sendOrderNotification($orderData);
-                
                 return $this->redirect(['admin-orders']);
             }
         }

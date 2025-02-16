@@ -48,6 +48,8 @@ class ContactForm extends Model
             [['name', 'email', 'subject', 'body'], 'required'],
             // Проверка корректности email
             ['email', 'email'],
+            // Проверка капчи
+            ['verifyCode', 'captcha'],
         ];
     }
 
@@ -67,20 +69,22 @@ class ContactForm extends Model
     }
 
     /**
-     * Отправляет сообщение в Telegram
-     * @return bool Результат отправки
+     * Отправляет email на указанный адрес используя данные из формы
+     * @param string $email Целевой email адрес
+     * @return boolean Результат отправки сообщения
      */
-    public function contact()
+    public function contact($email)
     {
         if ($this->validate()) {
-            // Отправляем сообщение в Telegram
-            $telegram = new \app\components\TelegramBot();
-            return $telegram->sendMessage([
-                'name' => $this->name,
-                'email' => $this->email,
-                'subject' => $this->subject,
-                'body' => $this->body
-            ]);
+            Yii::$app->mailer->compose()
+                ->setTo($email)
+                ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+                ->setReplyTo([$this->email => $this->name])
+                ->setSubject($this->subject)
+                ->setTextBody($this->body)
+                ->send();
+
+            return true;
         }
         return false;
     }

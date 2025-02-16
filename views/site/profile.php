@@ -45,19 +45,6 @@ $totalSpent = \app\models\Order::find()
         </div>
     </div>
 
-    <?php
-    // Массив с переводами ролей
-    $roleTranslations = [
-        'owner' => 'Владелец',
-        'admin' => 'Администратор',
-        'user' => 'Пользователь',
-        // Добавьте другие роли по мере необходимости
-    ];
-    
-    // Получение перевода роли
-    $translatedRole = isset($roleTranslations[$role]) ? $roleTranslations[$role] : $role;
-    ?>
-
     <!-- Информация профиля -->
     <div class="row">
         <div class="col-md-6">
@@ -78,7 +65,7 @@ $totalSpent = \app\models\Order::find()
                     <div class="info-item">
                         <label>Статус</label>
                         <div class="value">
-                          <span class="badge bg-success"><?= Html::encode($translatedRole) ?></span>
+                            <span class="badge bg-success">Активен</span>
                         </div>
                     </div>
                 </div>

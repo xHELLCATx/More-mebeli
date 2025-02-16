@@ -16,8 +16,6 @@ $css = <<<CSS
         border: none;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         cursor: pointer;
-        display: flex;
-        flex-direction: column;
     }
     
     .catalog-card:hover {
@@ -33,9 +31,6 @@ $css = <<<CSS
     
     .catalog-card .card-body {
         padding: 1.25rem;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
     }
     
     .catalog-card .card-title {
@@ -49,12 +44,6 @@ $css = <<<CSS
         color: #666;
         font-size: 0.95rem;
         line-height: 1.5;
-        flex: 1;
-        overflow: hidden;
-    }
-    
-    .catalog-card .price-buttons-container {
-        margin-top: auto;
     }
     
     /* Стиль для товаров, которых нет в наличии */
@@ -228,56 +217,57 @@ $this->registerCss($css);
         <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100 catalog-card <?= $product->stock_status === 'закончился' ? 'out-of-stock' : '' ?>" data-product-url="<?= Url::to(['site/product', 'seo_url' => $product->seo_url]) ?>">
-                        <?php if ($product->image): ?>
-                            <img src="<?= Yii::getAlias('@web/uploads/') . $product->image ?>" 
-                                 class="card-img-top" 
-                                 alt="<?= Html::encode($product->name) ?>"
-                                 title="<?= Html::encode($product->name) ?>">
-                        <?php endif; ?>
-                        
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"><?= Html::encode($product->name) ?></h5>
-                            <p class="card-text"><?= Html::encode(mb_strlen($product->description) > 250 ? mb_substr($product->description, 0, 250) . '...' : $product->description) ?></p>
-                        </div>
-
-                        <div class="card-footer border-0 bg-transparent mt-auto">
-                            <?php if ($product->hasValidDiscount()): ?>
-                                <div class="mb-2">
-                                    <span class="text-decoration-line-through text-muted">
-                                        <?= Yii::$app->formatter->asCurrency($product->price) ?>
-                                    </span>
-                                    <span class="badge bg-danger ms-2">-<?= $product->discount_percent ?>%</span>
-                                </div>
-                                <div class="h5 mb-3 text-danger">
-                                    <?= Yii::$app->formatter->asCurrency($product->getDiscountedPrice()) ?>
-                                </div>
-                            <?php else: ?>
-                                <div class="h5 mb-3">
-                                    <?= Yii::$app->formatter->asCurrency($product->price) ?>
-                                </div>
+                    <div class="card h-100 catalog-card <?= $product->stock_status === 'закончился' ? 'out-of-stock' : '' ?>" data-product-url="<?= Url::to(['site/product', 'id' => $product->id]) ?>">
+                        <div class="card-link">
+                            <?php if ($product->image): ?>
+                                <img src="<?= Yii::getAlias('@web/uploads/') . $product->image ?>" 
+                                     class="card-img-top" 
+                                     alt="<?= Html::encode($product->name) ?>">
                             <?php endif; ?>
-
-                            <div class="d-flex gap-2 buttons-container">
-                                <?= Html::a('Подробнее', ['site/product', 'seo_url' => $product->seo_url], [
-                                    'class' => 'btn btn-outline-primary flex-grow-1'
-                                ]) ?>
-                                <?php if (!Yii::$app->user->isGuest): ?>
-                                    <?php if ($product->stock_status === 'закончился'): ?>
-                                        <button class="btn btn-secondary" disabled>Товар закончился</button>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><?= Html::encode($product->name) ?></h5>
+                                <p class="card-text flex-grow-1"><?= Html::encode(mb_strlen($product->description) > 250 ? mb_substr($product->description, 0, 250) . '...' : $product->description) ?></p>
+                                
+                                <div class="mt-auto">
+                                    <?php if ($product->hasValidDiscount()): ?>
+                                        <div class="mb-2">
+                                            <span class="text-decoration-line-through text-muted">
+                                                <?= Yii::$app->formatter->asCurrency($product->price) ?>
+                                            </span>
+                                            <span class="badge bg-danger ms-2">-<?= $product->discount_percent ?>%</span>
+                                        </div>
+                                        <div class="h5 mb-3 text-danger">
+                                            <?= Yii::$app->formatter->asCurrency($product->getDiscountedPrice()) ?>
+                                        </div>
                                     <?php else: ?>
-                                        <form class="add-to-cart-form" style="flex-grow: 1;">
-                                            <input type="hidden" name="id" value="<?= $product->id ?>">
-                                            <?= Html::button('В корзину', [
-                                                'class' => 'btn btn-success w-100',
-                                                'type' => 'submit'
-                                            ]) ?>
-                                        </form>
+                                        <div class="h5 mb-3">
+                                            <?= Yii::$app->formatter->asCurrency($product->price) ?>
+                                        </div>
                                     <?php endif; ?>
-                                    <button class="btn btn-outline-danger favorite-btn" data-product-id="<?= $product->id ?>">
-                                        <i class="<?= $product->isFavorite(Yii::$app->user->id) ? 'fas' : 'far' ?> fa-heart"></i>
-                                    </button>
-                                <?php endif; ?>
+
+                                    <div class="d-flex gap-2 mb-2 buttons-container">
+                                        <?= Html::a('Подробнее', ['site/product', 'id' => $product->id], [
+                                            'class' => 'btn btn-outline-primary flex-grow-1'
+                                        ]) ?>
+                                        <?php if (!Yii::$app->user->isGuest): ?>
+                                            <?php if ($product->stock_status === 'закончился'): ?>
+                                                <button class="btn btn-secondary" disabled>Товар закончился</button>
+                                            <?php else: ?>
+                                                <form class="add-to-cart-form" style="flex-grow: 1;">
+                                                    <input type="hidden" name="id" value="<?= $product->id ?>">
+                                                    <?= Html::button('В корзину', [
+                                                        'class' => 'btn btn-success w-100',
+                                                        'type' => 'submit'
+                                                    ]) ?>
+                                                </form>
+                                            <?php endif; ?>
+                                            <button class="btn btn-outline-danger favorite-btn" data-product-id="<?= $product->id ?>">
+                                                <i class="<?= $product->isFavorite(Yii::$app->user->id) ? 'fas' : 'far' ?> fa-heart"></i>
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

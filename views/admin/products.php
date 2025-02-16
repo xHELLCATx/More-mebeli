@@ -65,7 +65,7 @@ $this->registerCssFile('@web/css/admin/table-actions.css');
                             <td><?= number_format($product->price, 0, '.', ' ') ?> ₽</td>
                             <td class="action-column">
                                 <div class="btn-group" role="group">
-                                    <?= Html::a('<i class="fas fa-eye"></i>', ['/site/product', 'seo_url' => $product->seo_url], [
+                                    <?= Html::a('<i class="fas fa-eye"></i>', ['/site/product', 'id' => $product->id], [
                                         'class' => 'btn btn-sm btn-success',
                                         'title' => 'Просмотр',
                                     ]) ?>

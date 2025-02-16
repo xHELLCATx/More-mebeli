@@ -12,7 +12,7 @@ use yii\db\ActiveRecord;
  * @property int $id ID заказа
  * @property int $user_id ID пользователя
  * @property float $total_sum Общая сумма заказа
- * @property string $status Статус заказа (new, processing, shipped, delivered, completed, cancelled)
+ * @property string $status Статус заказа (new, processing, completed, cancelled)
  * @property string $created_at Дата создания
  * @property string $phone Телефон
  * @property string $delivery_address Адрес доставки
@@ -49,9 +49,9 @@ class Order extends ActiveRecord
             // Строковые поля
             [['status', 'phone', 'delivery_address', 'comment'], 'string'],
             // Проверка статуса заказа
-            ['status', 'in', 'range' => array_keys(self::getStatusList())],
+            [['status'], 'in', 'range' => ['new', 'processing', 'completed', 'cancelled']],
             // Значение по умолчанию для статуса
-            ['status', 'default', 'value' => 'new'],
+            [['status'], 'default', 'value' => 'new'],
             // Ограничение длины телефона
             [['phone'], 'string', 'max' => 20],
         ];
@@ -125,21 +125,5 @@ class Order extends ActiveRecord
             return true;
         }
         return false;
-    }
-
-    /**
-     * Возвращает список доступных статусов заказа
-     * @return array Массив статусов
-     */
-    public static function getStatusList()
-    {
-        return [
-            'new' => 'Новый',
-            'processing' => 'В обработке',
-            'shipped' => 'Доставляется',
-            'delivered' => 'Доставлен',
-            'completed' => 'Завершен',
-            'cancelled' => 'Отменен'
-        ];
     }
 }

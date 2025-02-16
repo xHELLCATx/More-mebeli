@@ -5,7 +5,7 @@ return [
     'dsn' => 'mysql:host=localhost;dbname=furniture_shop',
     'username' => 'root',
     'password' => '',
-    'charset' => 'utf8mb4',
+    'charset' => 'utf8',
 
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,

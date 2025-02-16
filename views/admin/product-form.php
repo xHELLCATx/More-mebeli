@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
 
 $this->title = $title;
 $this->params['breadcrumbs'][] = ['label' => 'Админ-панель', 'url' => ['index']];
@@ -14,11 +13,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'id' => 'product-name']) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'category')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6, 'id' => 'product-description']) ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'price')->textInput(['type' => 'number', 'step' => '0.01']) ?>
 
@@ -33,9 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="mb-3">
             <label class="form-label">Текущее изображение:</label><br>
             <img src="<?= Yii::getAlias('@web/uploads/') . $model->image ?>" 
-                 alt="<?= Html::encode($model->name) ?>"
-                 title="<?= Html::encode($model->name) ?>"
-                 class="img-thumbnail" style="max-width: 200px">
+                 alt="Current image" 
+                 style="max-width: 200px;">
         </div>
     <?php endif; ?>
 
@@ -52,9 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php foreach ($model->productImages as $image): ?>
                     <div class="col-md-4 mb-3">
                         <img src="<?= Yii::getAlias('@web/uploads/') . $image->image ?>" 
-                             alt="<?= Html::encode($model->name) ?>"
-                             title="<?= Html::encode($model->name) ?>"
-                             class="img-thumbnail" style="max-width: 200px">
+                             alt="Additional image"
+                             class="img-fluid">
                         <?= Html::a('Удалить', ['delete-image', 'id' => $image->id], [
                             'class' => 'btn btn-danger btn-sm mt-2',
                             'data' => [
@@ -96,27 +93,27 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-
-    <!-- Блок SEO -->
-    <div class="card mb-3">
+     <!-- Блок SEO -->
+     <div class="card mb-3">
         <div class="card-header">
             <h5 class="mb-0">SEO настройки</h5>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <?= Html::button('Автогенерация SEO', ['class' => 'btn btn-info', 'id' => 'generate-seo']) ?>
-                </div>
-            </div>
-            <br>
-            <?= $form->field($model, 'seo_url')->textInput(['maxlength' => true, 'id' => 'product-seo_url']) ?>
-            <?= $form->field($model, 'meta_title')->textInput(['maxlength' => true, 'id' => 'product-meta_title']) ?>
-            <?= $form->field($model, 'meta_description')
-                ->textarea(['rows' => 3])
-                ->hint('Описание страницы для поисковых систем (до 450 символов)') ?>
-            <?= $form->field($model, 'meta_keywords')->textInput(['maxlength' => true, 'id' => 'product-meta_keywords']) ?>
+            <?= $form->field($model, 'meta_title')->textInput(['maxlength' => true])
+                ->hint('Заголовок страницы для поисковых систем (до 60 символов)') ?>
+
+            <?= $form->field($model, 'meta_description')->textarea(['rows' => 3])
+                ->hint('Описание страницы для поисковых систем (до 160 символов)') ?>
+
+            <?= $form->field($model, 'meta_keywords')->textInput(['maxlength' => true])
+                ->hint('Ключевые слова через запятую') ?>
+
+            <?= $form->field($model, 'seo_url')->textInput(['maxlength' => true])
+                ->hint('URL-адрес страницы товара (например: comfortable-chair)') ?>
         </div>
     </div>
+
+    <div class="form-group">
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
@@ -152,39 +149,4 @@ $css = <<<CSS
     }
 CSS;
 $this->registerCss($css);
-?>
-
-<?php
-$js = <<<JS
-$(document).ready(function() {
-    $('#generate-seo').on('click', function() {
-        var productName = $('#product-name').val();
-        var productDescription = $('#product-description').val();
-        
-        $.ajax({
-            url: '/Online_shop/web/admin/generate-seo',
-            type: 'POST',
-            data: {
-                name: productName,
-                description: productDescription,
-                _csrf: yii.getCsrfToken()
-            },
-            success: function(response) {
-                if (response.success) {
-                    $('#product-seo_url').val(response.seo_url);
-                    $('#product-meta_title').val(response.meta_title);
-                    $('#product-meta_description').val(response.meta_description);
-                    $('#product-meta_keywords').val(response.meta_keywords);
-                } else {
-                    alert(response.message || 'Ошибка при генерации SEO');
-                }
-            },
-            error: function() {
-                alert('Произошла ошибка при отправке запроса');
-            }
-        });
-    });
-});
-JS;
-$this->registerJs($js);
 ?>

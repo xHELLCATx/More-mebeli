@@ -126,7 +126,6 @@ $this->registerJsFile(
     $leftMenuItems = [
         ['label' => 'Главная', 'url' => ['/site/index']],
         ['label' => 'Каталог', 'url' => ['/site/catalog']],
-        ['label' => 'Статьи', 'url' => ['/article/index']],
         ['label' => 'О нас', 'url' => ['/site/about']],
         ['label' => 'Контакты', 'url' => ['/site/contact']],
     ];

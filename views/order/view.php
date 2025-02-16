@@ -124,7 +124,6 @@ $currentStatus = $statuses[$model->status] ?? ['label' => $model->status, 'class
                                             <?php if ($item->product && $item->product->image): ?>
                                                 <img src="<?= Yii::getAlias('@web/uploads/') . $item->product->image ?>" 
                                                      alt="<?= Html::encode($item->product->name) ?>"
-                                                     title="<?= Html::encode($item->product->name) ?>"
                                                      class="me-3"
                                                      style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
                                             <?php endif; ?>
