@@ -29,7 +29,7 @@ class AdminController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::class,
+                'class' => AccessControl::className(),
                 'rules' => [
                     [
                         'allow' => true,
@@ -37,7 +37,14 @@ class AdminController extends Controller
                         'matchCallback' => function ($rule, $action) {
                             $user = Yii::$app->user->identity;
                             return $user->role === 'owner' || $user->role === 'admin';
-                        }
+                        },
+                        'actions' => [
+                            'index', 'products', 'create-product', 'update-product',
+                            'delete-product', 'orders', 'update-order-status',
+                            'users', 'update-user', 'delete-user', 'settings',
+                            'seo-pages', 'create-page-seo', 'update-page-seo', 'delete-page-seo',
+                            'init-default-seo', 'seo-debug', 'generate-seo'
+                        ],
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
@@ -331,6 +338,35 @@ class AdminController extends Controller
         }
 
         if ($order->load(Yii::$app->request->post()) && $order->save()) {
+            // Получаем все товары заказа для уведомления
+            $orderItems = [];
+            foreach ($order->orderItems as $item) {
+                $orderItems[] = [
+                    'name' => $item->product->name,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price
+                ];
+            }
+
+            // Отправляем уведомление об обновлении заказа
+            $user = User::findOne($order->user_id);
+            $orderData = [
+                'order_id' => $order->id,
+                'customer_name' => $user->username,
+                'customer_phone' => $order->phone,
+                'customer_email' => $user->email,
+                'delivery_address' => $order->delivery_address,
+                'comment' => $order->comment,
+                'created_at' => $order->created_at,
+                'status' => $order->status,
+                'items' => $orderItems,
+                'total_amount' => $order->total_sum,
+                'is_update' => true
+            ];
+            
+            Yii::$app->orderBot->sendOrderNotification($orderData);
+            
+            Yii::$app->session->setFlash('success', 'Статус заказа успешно обновлен.');
             return $this->redirect(['orders']);
         }
 
@@ -489,5 +525,65 @@ class AdminController extends Controller
     public function actionSeoDebug()
     {
         return $this->render('seo-debug');
+    }
+
+    /**
+     * Обработка AJAX-запроса для генерации SEO-данных
+     * @return array
+     */
+    public function actionGenerateSeo()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $name = \Yii::$app->request->post('name');
+        $description = \Yii::$app->request->post('description');
+        
+        if (empty($name)) {
+            return [
+                'success' => false,
+                'message' => 'Название товара не может быть пустым'
+            ];
+        }
+
+        // Генерируем SEO URL
+        $seoUrl = \app\components\Translit::convert($name);
+        
+        // Генерируем meta title (название + базовый суффикс)
+        $metaTitle = $name . ' - Купить в нашем магазине';
+        if (mb_strlen($metaTitle) > 60) {
+            $metaTitle = mb_substr($metaTitle, 0, 57) . '...';
+        }
+        
+        // Генерируем meta description
+        $metaDescription = $description;
+        if (empty($metaDescription)) {
+            $metaDescription = "Купить {$name} в нашем интернет-магазине. ✓ Выгодные цены ✓ Быстрая доставка ✓ Гарантия качества. Большой выбор товаров для дома и офиса. Закажите {$name} с доставкой на дом!";
+        }
+        if (mb_strlen($metaDescription) > 450) {
+            $metaDescription = mb_substr($metaDescription, 0, 447) . '...';
+        }
+        
+        // Генерируем ключевые слова
+        $keywords = [];
+        $words = preg_split('/\s+/', mb_strtolower($name));
+        foreach ($words as $word) {
+            if (mb_strlen($word) > 2) {
+                $keywords[] = $word;
+            }
+        }
+        // Добавляем общие ключевые слова
+        $keywords[] = 'купить';
+        $keywords[] = 'цена';
+        $keywords[] = 'интернет-магазин';
+        $keywords[] = 'доставка';
+        $keywords[] = 'заказать';
+        
+        return [
+            'success' => true,
+            'seo_url' => $seoUrl,
+            'meta_title' => $metaTitle,
+            'meta_description' => $metaDescription,
+            'meta_keywords' => implode(', ', array_unique($keywords))
+        ];
     }
 }

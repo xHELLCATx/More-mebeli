@@ -65,7 +65,23 @@ Current URL: $currentUrl
         if ($product->meta_keywords) {
             echo Html::tag('meta', '', ['name' => 'keywords', 'content' => Html::encode($product->meta_keywords)]);
         }
-    } else {
+    } 
+    // Для страницы статьи
+    elseif ($controller === 'article' && $action === 'view' && isset($this->context->article)) {
+        $article = $this->context->article;
+        if ($article->meta_title) {
+            echo Html::tag('title', Html::encode($article->meta_title));
+        } else {
+            echo Html::tag('title', Html::encode($article->title));
+        }
+        if ($article->meta_description) {
+            echo Html::tag('meta', '', ['name' => 'description', 'content' => Html::encode($article->meta_description)]);
+        }
+        if ($article->meta_keywords) {
+            echo Html::tag('meta', '', ['name' => 'keywords', 'content' => Html::encode($article->meta_keywords)]);
+        }
+    }
+    else {
         $pageSeo = \app\models\PageSeo::findOne(['page_url' => $currentUrl]);
         if ($pageSeo) {
             if ($pageSeo->meta_title) {
@@ -126,6 +142,7 @@ $this->registerJsFile(
     $leftMenuItems = [
         ['label' => 'Главная', 'url' => ['/site/index']],
         ['label' => 'Каталог', 'url' => ['/site/catalog']],
+        ['label' => 'Статьи', 'url' => ['/articles']],
         ['label' => 'О нас', 'url' => ['/site/about']],
         ['label' => 'Контакты', 'url' => ['/site/contact']],
     ];

@@ -91,6 +91,8 @@ class UserController extends Controller
         return $this->redirect(['admin/users']);
     }
 
+   
+
     /**
      * Удаление пользователя
      * @param integer $id ID пользователя

@@ -125,7 +125,8 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+        if ($model->load(Yii::$app->request->post()) && $model->contact()) {
+            Yii::$app->session->setFlash('contactFormSubmitted', 'Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
             return $this->refresh();
         }
         return $this->render('contact', [
@@ -223,26 +224,28 @@ class SiteController extends Controller
     /**
      * Отображает страницу товара
      *
-     * @param int $id
+     * @param string $seo_url SEO-friendly URL товара
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionProduct($id)
+    public function actionProduct($seo_url)
     {
-        $product = Product::findOne($id);
+        $product = Product::findOne(['seo_url' => $seo_url]);
+        
         if ($product === null) {
-            throw new NotFoundHttpException('The requested product does not exist.');
+            throw new NotFoundHttpException('Товар не найден.');
         }
 
-        // Сохраняем продукт в контексте контроллера для доступа в шаблоне
+        // Устанавливаем свойство product для использования в layout
         $this->product = $product;
 
+        // Добавляем товар в недавно просмотренные
         if (!Yii::$app->user->isGuest) {
-            RecentlyViewed::addToRecentlyViewed(Yii::$app->user->id, $id);
+            RecentlyViewed::addToRecentlyViewed(Yii::$app->user->id, $product->id);
         }
 
         return $this->render('product', [
-            'product' => $product,
+            'product' => $product
         ]);
     }
 
@@ -256,6 +259,14 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['login']);
         }
+
+        $user = Yii::$app->user->identity;
+        $role = $user->role; // Получение роли пользователя
+
+        return $this->render('profile', [
+            'user' => $user,
+            'role' => $role, // Передача роли в представление
+        ]);
 
         $user = Yii::$app->user->identity;
         $cartItems = Cart::find()

@@ -74,7 +74,6 @@ class Product extends ActiveRecord
             // SEO правила
             [['meta_title', 'meta_description', 'meta_keywords', 'seo_url'], 'string'],
             [['meta_title'], 'string', 'max' => 60],
-            [['meta_description'], 'string', 'max' => 160],
             [['seo_url'], 'unique'],
             [['seo_url'], 'match', 'pattern' => '/^[a-z0-9-]+$/', 'message' => 'SEO URL может содержать только строчные буквы, цифры и дефисы'],
             // Статус наличия
